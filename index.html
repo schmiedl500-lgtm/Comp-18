@@ -1,0 +1,433 @@
+<!doctype html><html lang="sk"><head><meta charset="utf-8"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#1f4e78"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><title>Comp 18</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<base target="_top"><title>Comp 18</title>
+<style>
+:root{--bg:#f4f4f1;--fg:#161614;--mut:#5d5d58;--card:#fff;--ln:#d8d8d2;--acc:#1f5fbf;--red:#c0392b;
+--f7:#2e8b57;--f6:#7b4fc9;--f5:#1f8fa6;--f4:#3b7dd8;--f3:#c99212;--f2:#e07b24;--f1:#c0392b;--f0:#999}
+@media (prefers-color-scheme:dark){:root{--bg:#141413;--fg:#eeeeea;--mut:#a3a39c;--card:#20201e;--ln:#3a3a36;--acc:#6aa0ff}}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--fg)}
+body{font:17px/1.35 system-ui,-apple-system,Roboto,sans-serif;-webkit-text-size-adjust:100%}
+header{position:sticky;top:0;background:var(--bg);padding:6px 8px;border-bottom:1px solid var(--ln);z-index:3}
+.row{display:flex;gap:6px;align-items:center}
+input,select,button,textarea{font:inherit;color:inherit;background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:8px}
+input[type=search]{flex:1;min-width:0;font-size:18px}
+button{cursor:pointer;min-height:44px}button.pri{background:var(--acc);color:#fff;border-color:var(--acc);font-weight:600}
+button.red{background:var(--red);color:#fff;border-color:var(--red);font-weight:600}
+.chips{display:flex;gap:6px;overflow-x:auto;margin-top:6px;scrollbar-width:none}
+.chip{padding:6px 10px;border-radius:14px;color:#fff;white-space:nowrap;cursor:pointer;flex:none;font-size:14px}.chip.off{opacity:.35}
+.f7{background:var(--f7)}.f6{background:var(--f6)}.f5{background:var(--f5)}.f4{background:var(--f4)}.f3{background:var(--f3)}.f2{background:var(--f2)}.f1{background:var(--f1)}.f0{background:var(--f0)}
+#info{font-size:13px;color:var(--mut);white-space:nowrap;align-self:center}
+ul{list-style:none;margin:0;padding:6px 6px 90px}
+li{background:var(--card);border:1px solid var(--ln);border-left:8px solid var(--f0);border-radius:10px;margin:6px 0;padding:10px}
+li.F7{border-left-color:var(--f7)}li.F6{border-left-color:var(--f6)}li.F5{border-left-color:var(--f5)}li.F4{border-left-color:var(--f4)}li.F3{border-left-color:var(--f3)}li.F2{border-left-color:var(--f2)}li.F1{border-left-color:var(--f1)}
+.t{font-size:20px;font-weight:700}.m{color:var(--mut);font-size:15px}.q{color:var(--f2);font-weight:600;font-size:15px}.ok{color:var(--f7);font-weight:600;font-size:15px}
+.pb{color:var(--red);font-weight:700;font-size:15px}
+li.kk{background:#fff4c2;outline:3px solid #f5b800;outline-offset:-3px}.kkb{display:inline-block;background:#f5b800;color:#000;font-weight:700;border-radius:8px;padding:2px 8px;font-size:14px}
+.chip.kkc{background:#f5b800;color:#000;font-weight:700}button.kok{background:#1e8e3e;color:#fff;border-color:#1e8e3e;font-weight:700;flex-basis:100%}
+@media (prefers-color-scheme:dark){li.kk{background:#4a3d00}}
+.acts{display:none;gap:8px;flex-wrap:wrap;margin-top:10px}li.open .acts{display:flex}
+.acts button{flex:1 1 46%;font-size:16px;min-height:52px}
+.acts .more{display:none;flex-basis:100%;gap:8px;flex-wrap:wrap}.acts .more.on{display:flex}
+#bar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--ln);padding:8px;display:flex;gap:8px;align-items:center;z-index:3}
+#bar span{flex:1;font-size:14px}
+input.ch{width:26px;height:26px;margin:0 10px 0 0;vertical-align:middle;display:none}body.multi input.ch{display:inline-block}
+#mbar{display:none;position:fixed;left:0;right:0;bottom:60px;background:var(--card);border-top:1px solid var(--ln);padding:6px 8px;gap:6px;align-items:center;z-index:3}
+body.multi #mbar{display:flex}#mbar button{flex:1;font-size:15px}
+#menu{display:none;position:absolute;right:8px;top:52px;background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:6px;z-index:5;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+#menu.on{display:block}#menu button{display:block;width:100%;text-align:left;border:0;margin:2px 0}
+.dlg{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;z-index:10;align-items:flex-end;justify-content:center}
+.dlg.on{display:flex}.box{background:var(--card);width:100%;max-width:640px;max-height:92vh;overflow:auto;border-radius:16px 16px 0 0;padding:14px}
+.box h2{font-size:20px;margin:0 0 10px}.box label{display:block;margin:10px 0 4px;font-weight:600}
+.box textarea,.box input,.box select{width:100%}
+.typy{display:flex;flex-direction:column;gap:8px}.typy button{text-align:left;font-size:17px;min-height:52px}.typy button.sel{border:3px solid var(--acc);font-weight:700}
+.nahl{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.nahl img{width:88px;height:88px;object-fit:cover;border-radius:8px;border:1px solid var(--ln)}
+.pr{border-left-color:var(--red)!important}
+.foto{width:100%;border-radius:10px;margin-top:8px;border:1px solid var(--ln)}
+.navrh{background:rgba(31,95,191,.08);border-radius:10px;padding:8px;margin-top:8px;font-size:15px}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:13px;font-weight:700;color:#fff;background:var(--red)}
+.badge.obj{background:var(--f3)}.badge.ne{background:#7b4fc9}.badge.zr{background:#777}
+.mat{display:inline-block;padding:1px 6px;border-radius:8px;font-size:12px;font-weight:700;background:#b87333;color:#fff}.mat.bl{background:#5a6b7a}
+.odm{color:var(--red);font-size:14px;margin:4px 0}
+li.more{text-align:center;color:var(--acc);font-weight:600;border-left-color:var(--acc);cursor:pointer;padding:14px}
+.acts button.obj{background:var(--f3);color:#fff;border-color:var(--f3);font-weight:600}
+#oz{max-height:30vh;overflow:auto;font-size:15px;margin:6px 0;padding:6px;border:1px solid var(--ln);border-radius:10px}
+.ov{display:flex;gap:8px;align-items:flex-start;background:rgba(123,79,201,.1);border-radius:10px;padding:8px;margin-top:8px;font-size:15px}.ov input{width:26px;height:26px;margin-top:2px;flex:none}
+#fab{position:fixed;right:14px;bottom:76px;width:74px;height:74px;border-radius:50%;background:var(--red);color:#fff;border:0;font-size:34px;z-index:4;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+body.multi #fab{display:none}
+.tg{display:flex;gap:8px}.tg button{flex:1;font-size:19px;min-height:56px}.tg button.sel{background:var(--acc);color:#fff;border-color:var(--acc);font-weight:700}
+body.foto header,body.foto #l,body.foto #mbar,body.foto #fab,body.foto #send{display:none!important}
+#vfoto{display:none;padding:16px}body.foto #vfoto{display:block}
+#fab,#pfoto,#pnew,#vfoto{display:none!important}
+#vbig{width:100%;min-height:42vh;font-size:32px;font-weight:700;border-radius:20px;background:var(--red);color:#fff;border:0}
+.of label{margin:8px 0 2px;font-weight:600;display:block}.of select,.of input,.of textarea{width:100%}.badge.ok{background:var(--f7)}
+</style></head><body>
+<header>
+<div class="row"><input id="q" type="search" placeholder="Hľadaj rúru, napr. 713 R2001 G">
+<select id="d" style="width:78px"><option value="">Deck</option><option>00</option><option>01</option><option>02</option><option>03</option><option value="--">bez</option></select>
+<button id="prb" class="red" style="min-width:56px">⚠ 0</button><button id="men" style="min-width:48px">⋯</button></div>
+<div class="chips" id="sum"></div>
+<div id="menu">
+<button data-f="">Všetky rúry</button><button data-f="p">Len passrohre</button><button data-f="n">Len nenamontované</button>
+<button id="multi">☑ Označiť viac rúr naraz</button><button id="add">＋ Pridať chýbajúcu rúru</button>
+<button id="pnew">📷 Problém bez rúry (len fotka)</button><div class="m" id="stav" style="padding:6px 8px"></div></div>
+</header>
+<div id="vfoto"><div class="m" style="margin-bottom:10px" id="vmeno"></div>
+<button id="vbig">📷<br>Odfotiť</button>
+<button id="vgal" style="width:100%;margin-top:10px;min-height:56px;font-size:19px">🖼 Fotka z galérie</button>
+<p class="m" style="margin-top:12px">Odfoť štítok alebo čo treba. Potom vyberieš, čo to je (namontované, domer, objednať, chybný kus…), deck a stranu. Bez signálu sa to uloží v telefóne a odošle samo, keď signál bude – appku len nechaj otvorenú. Ak sa po odfotení appka obnoví a fotka sa stratí, odfoť normálnym foťákom a daj „Fotka z galérie“.</p>
+<div id="vzoz"></div></div>
+<ul id="l"></ul>
+<div id="mbar"><span id="mcnt" style="font-size:14px;white-space:nowrap">0</span><button id="mall">Všetky</button>
+<button data-m="lezi">Leží</button><button data-m="montuje">Montuje</button><button data-m="namontovane">Hotové</button><button data-m="objednat" id="mobj" style="display:none;background:var(--f3);color:#fff;border-color:var(--f3)">📦 Objednať</button></div>
+<button id="fab" aria-label="Odfotiť problém">📷</button>
+<div id="bar"><span id="cnt">…</span><button id="obnov">↻ Obnoviť</button><button class="pri" id="send">Odoslať</button></div>
+
+<div class="dlg" id="pdlg"><div class="box">
+<h2 id="ptit">Problém</h2>
+<div class="nahl" id="pnahl"></div>
+<div id="prura"><label>Číslo rúry zo štítku (ak vieš – napr. 713 R2001 G)</label><input id="prq" list="prl" autocomplete="off"><datalist id="prl"></datalist></div>
+<label>Čo to je?</label><div class="typy" id="ptypy"></div>
+<label>Deck</label><div class="tg" id="pdk"><button data-v="00">00</button><button data-v="01">01</button><button data-v="02">02</button><button data-v="03">03</button></div>
+<label>Strana</label><div class="tg" id="pst"><button data-v="SB">SB</button><button data-v="MS">MS</button><button data-v="BB">BB</button></div>
+<label>Poznámka – koľko kusov, číslo rúry… (nepovinné)</label><textarea id="ptext" rows="2" placeholder="napr. príruby DN150 – 2 ks"></textarea>
+<button id="pfoto" style="width:100%;font-size:18px;margin-top:10px">📷 Pridať ďalšiu fotku</button>
+<input id="pfile" type="file" accept="image/jpeg,image/png" capture="environment" multiple style="display:none">
+<div class="row" style="margin-top:14px"><button id="pzrus" style="flex:1">Zrušiť</button><button id="pok" class="red" style="flex:2">Odoslať</button></div>
+</div></div>
+
+<div class="dlg" id="odlg"><div class="box">
+<div class="row"><h2 style="flex:1;margin:0">📦 Objednávka – Forms Materialanforderung</h2><button id="ozav">Zavrieť</button></div>
+<div id="oz"></div><div id="of" class="of"></div>
+</div></div>
+
+<div class="dlg" id="ldlg"><div class="box">
+<div class="row"><h2 style="flex:1;margin:0">⚠ Problémy</h2><button id="lzav">Zavrieť</button></div>
+<div class="row" style="margin:8px 0"><select id="lf" style="flex:1"><option value="otv">Otvorené</option><option value="vse">Všetky</option></select></div>
+<div id="lp"></div>
+</div></div>
+
+<div id="boot" style="font:17px system-ui,sans-serif;padding:24px">Načítavam Comp 18…</div>
+<script>
+// Offline appka Comp 18 (PWA) – Claude 10.11.2026, Daniel „appka nefunguje offline, vymysli niečo“. Dáta aj zápisy ostávajú v telefóne; s Google sa synchronizuje, keď je signál.
+const API="https://script.google.com/macros/s/AKfycbz6twvQmnRPq1aDLC1fu2aKAKAJaVYMYbui9lSDys1Wrm1Ma_ygKVgOii71d2CYxMLh/exec";
+function lsg(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}}
+function lss(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}
+const T0=new URLSearchParams(location.search).get("t");if(T0)lss("c18_t",T0);
+const TOK=T0||lsg("c18_t");
+if(T0&&history.replaceState)history.replaceState(null,"",location.pathname);
+function apiRaw(x){const ctl=new AbortController();const to=setTimeout(()=>ctl.abort(),25000);
+return fetch(API+"?api=1&t="+encodeURIComponent(TOK)+"&q="+encodeURIComponent(JSON.stringify(x)),{signal:ctl.signal,redirect:"follow"})
+.then(r=>{clearTimeout(to);if(!r.ok)throw new Error("server "+r.status);return r.json()}).then(j=>{if(!j.ok)throw new Error(j.err||"chyba");return j.r})}
+async function apiCall(x){
+ if(x.op==="zapis"&&(x.rows||[]).length>12){let res={ok:[],odmietnute:[]};for(let i=0;i<x.rows.length;i+=12){const r=await apiRaw(Object.assign({},x,{rows:x.rows.slice(i,i+12)}));
+  res.ok=res.ok.concat(r.ok||[]);res.odmietnute=res.odmietnute.concat(r.odmietnute||[]);res.web=r.web;res.pr=r.pr}return res}
+ return apiRaw(x)}
+window.google={script:{run:(function(){function R(s,f){return{withSuccessHandler:h=>R(h,f),withFailureHandler:h=>R(s,h),api:x=>{apiCall(x).then(r=>{
+  if(r&&r.web){const b=lsg("c18_boot_"+TOK);if(b){b.cfg.web=r.web;if(r.pr)b.cfg.pr=r.pr;lss("c18_boot_"+TOK,b)}}s&&s(r)}).catch(e=>f&&f(e))}}}return R()})()}};
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+function boot(){
+ const B=document.getElementById("boot");
+ if(!TOK){B.innerHTML="Chýba osobný odkaz. Otvor appku z odkazu, ktorý ti poslal Daniel.";return}
+ const c=lsg("c18_boot_"+TOK);
+ const nacitaj=()=>apiRaw({op:"data"}).then(r=>{const nove=!c||((r.dd||{}).vytvorene!==(c.dd||{}).vytvorene);
+   if(!lss("c18_boot_"+TOK,r)){try{localStorage.removeItem("c18_boot_"+TOK)}catch(e){}}
+   return {r:r,nove:nove}});
+ if(c){B.remove();START(c.dd,c.cfg);
+   nacitaj().then(o=>{if(o.nove){const st=document.getElementById("cnt");const b=document.createElement("button");b.textContent="↻ Nové dáta – ťukni";b.style.cssText="background:#2e7d32;color:#fff;border-color:#2e7d32";
+     b.onclick=()=>location.reload();const bar=document.getElementById("bar");bar.insertBefore(b,bar.firstChild)}}).catch(()=>{});return}
+ B.textContent="Prvé otvorenie – sťahujem zoznam rúr (treba signál)…";
+ nacitaj().then(o=>{B.remove();START(o.r.dd,o.r.cfg)}).catch(e=>{B.innerHTML="Nepodarilo sa stiahnuť dáta ("+(e.message||e)+").<br><br>Prvý raz otvor appku tam, kde je signál.<br><br><button onclick='location.reload()' style='font-size:18px;padding:10px 18px'>Skúsiť znova</button>"})}
+function START(DD,C){
+
+const D0=DD.rows||[];const VYT=((DD.web_do||DD.vytvorene)||"").replace("T"," ");
+const DANIEL=C.uk==="daniel";
+const FZ=["v konštrukcii (Catia)","Passrohr nedomeraný","vo výrobe / domerané","na sklade – zobrať","vyskladnené (Meyer)","leží na palube","montuje sa","namontované – hotové"];
+const AK={lezi:"Leží na palube",montuje:"Montuje sa",namontovane:"Hotové",domer:"Domerané → na výrobu"};
+const AK2={korb:"Korbmodell urobený",korb_odovzdany:"Korbmodell odovzdaný",spojka:"Teekay spojka",zrus:"Zrušiť posledné"};
+const LBL=Object.assign({},AK,AK2,{domer:"Domerané – na výrobu",namontovane:"Hotové – namontované",pridaj:"Pridaná do zoznamu",skontrolovane:"✓ Skontrolované"});
+const PT={montaz:"✅ Namontované (štítok)",domer:"📏 Domer – zameraný Passrohr",rura:"📦 Objednať túto rúru",chybny:"❌ Chybný kus / nesedí",priruby:"🔩 Objednať príruby",material:"🧰 Materiál (držiak, Teekay, tesnenie…)",trasa:"🚧 Chýba trasa – nedá sa zamerať",ine:"Iné"};
+const OD={25:"33,7",32:"42,4",40:"48,3",50:"60,3",65:"76,1",80:"88,9",100:"114,3",125:"139,7",150:"168,3",200:"219,1",250:"273",300:"323,9",350:"355,6",400:"406,4"};
+function ls(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||"null");localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
+function teraz(){const d=new Date(),p=n=>String(n).padStart(2,"0");return p(d.getDate())+"."+p(d.getMonth()+1)+" "+p(d.getHours())+":"+p(d.getMinutes())}
+function nid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
+function norm(s){return (s||"").toLowerCase().replace(/\s+/g,"")}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+document.getElementById("stav").textContent=C.u+" · "+(DD.stav||"")+(C.verzia?" · "+C.verzia:"");
+
+// ---------- dáta ----------
+const KEY="comp18w_rada_"+C.u,PKEY="comp18w_pridane",QPKEY="comp18w_prob_"+C.u;
+let Q=ls(KEY)||[],PRID=ls(PKEY)||[],QP=ls(QPKEY)||[],WEB=[],PR=C.pr||[],ODM=[];
+const ZAVRETE=new Set(["vyriešené","zrušené"]);
+function ulozQ(){ls(KEY,Q);cnt();posli()}
+function setWeb(w,r){WEB=(w||[]).filter(z=>!VYT||z.ts>VYT);const ids=new Set((w||[]).map(z=>z.id));for(const i of (r&&r.ok)||[])ids.add(i);
+for(const o of (r&&r.odmietnute)||[]){ids.add(o.id);ODM.push(o)}Q=Q.filter(z=>!ids.has(z.id));ls(KEY,Q);
+if(r&&r.odmietnute&&r.odmietnute.length)alert("Server odmietol zápis (zlé číslo rúry): "+r.odmietnute.map(o=>o.k+" "+o.a).join(", ")+" – zapíš cez „Pridať chýbajúcu rúru“.")}
+function ulozQP(){try{localStorage.setItem(QPKEY,JSON.stringify(QP));return true}catch(e){return false}}
+function setPr(p){if(!p)return;PR=p;const ids=new Set(p.map(z=>z.id));QP=QP.filter(z=>!ids.has(z.id));ulozQP();prb()}
+setWeb(C.web);
+function Dall(){const m=new Map(D0.map(x=>[x.k,x]));
+for(const z of WEB){if(z.a!=="pridaj"||m.has(z.k))continue;const mm=z.k.match(/^(\d{3})([A-Z]\d{3,5})#([A-Z]{1,2})$/);if(!mm)continue;
+const P=(z.p||"").toUpperCase(),dn=(P.match(/DN\s*(\d+)/)||[])[1]||"?",dk=(P.match(/\bD0?([0-3])\b/)||[])[1];
+m.set(z.k,{k:z.k,r:mm[1]+" "+mm[2],i:mm[3],dn:dn,b:mm[1],d:dk!=null?"0"+dk:"?",p:/\bPR\b/.test(P)?1:0,sm:"pridaná ručne",s:"",t:"",pr:"",kam:"",ap:"",v:"",vs:"",dm:"",f:1,z:{}})}
+for(const p of PRID){const e=m.get(p.k);if(e){if(p.p)e.p=1}else m.set(p.k,p)}return [...m.values()]}
+let D=Dall();const DK=()=>new Map(D.map(x=>[x.k,x]));
+function lokal(k){const o={};for(const z of WEB.concat(Q))if(z.k===k){if(z.a==="zrus"){delete o[z.p]}else o[z.a]=z}return o}
+function fz(x,lo){return lo.namontovane?7:lo.montuje?6:lo.lezi?5:(lo.domer||lo.korb||lo.korb_odovzdany)?Math.max(x.f,2):x.f}
+function kk(x,lo,f){return DANIEL&&f===5&&!lo.skontrolovane&&!(x.z&&x.z.skontrolovane)}   // v11: Daniel 10.11. „čo mám skontrolovať, zvýrazni, a keď skontrolujem, odkliknem“
+let FK=false,FZM=false;
+// v13 Daniel 10.11. 10:48 „koľko máme zamerané, koľko treba zamerať a ktoré“ – Passrohr, ktorý Meyer má ešte v Catii a my sme ho nezamerali
+function zam(x,lo){const z=x.z||{};return !!x.p&&x.sm==="Catia"&&!x.dm&&!lo.domer&&!lo.korb&&!lo.korb_odovzdany&&!z.domer&&!z.korb&&!z.korb_odovzdany}
+function jePR(x,lo){return x.p||lo.domer||lo.korb||lo.korb_odovzdany}
+function otvProb(k){return PR.concat(QP.map(p=>Object.assign({stav:"čaká"},p))).filter(p=>p.k===k&&!ZAVRETE.has(p.stav))}
+
+// ---------- odosielanie ----------
+let SYNC="",CHYBA="",BEZI=false;
+function cnt(){const n=Q.length+QP.length,e=document.getElementById("cnt");
+e.textContent=n?(n+" čaká na odoslanie"+(CHYBA?" – "+CHYBA:"")):("✓ všetko odoslané"+(SYNC?" · "+SYNC:""));e.style.color=n?"var(--f2)":""}
+function chybaText(e){const m=(e&&e.message)||String(e||"");return /Neplatný|Len Daniel|neexistuje|chýba/.test(m)?m:"bez signálu, skúsim znova"+(m?" ("+m.slice(0,60)+")":"")}
+function posli(){if(BEZI)return;
+if(Q.length){BEZI=true;const davka=Q.slice(0,200);
+google.script.run.withSuccessHandler(r=>{BEZI=false;CHYBA="";setWeb(r.web,r);setPr(r.pr);SYNC=teraz();cnt();render();if(Q.length||QP.length)setTimeout(posli,300)})
+.withFailureHandler(e=>{BEZI=false;CHYBA=chybaText(e);cnt()}).api({op:"zapis",t:C.t,rows:davka});return}
+if(!QP.length)return;BEZI=true;const p=QP[0];
+google.script.run.withSuccessHandler(r=>{BEZI=false;CHYBA="";setPr(r.pr);SYNC=teraz();cnt();render();if(QP.length)setTimeout(posli,300)})
+.withFailureHandler(e=>{BEZI=false;p.pokusy=(p.pokusy||0)+1;CHYBA=chybaText(e);
+if(p.pokusy>=3&&QP.length>1){QP.push(QP.shift());ulozQP()}
+if(p.pokusy===6){p.fotky=(p.fotky||[]).slice(0,1);p.text=((p.text||"")+" [fotky skrátené – nedali sa odoslať]").trim();ulozQP()}cnt()})
+.api({op:"problem",t:C.t,problem:{id:p.id,k:p.k,typ:p.typ,text:p.text,fotky:p.fotky,kto:p.kto}})}
+function nacitajWeb(){if(BEZI)return;google.script.run.withSuccessHandler(r=>{const n=WEB.length,np=JSON.stringify(PR);setWeb(r.web);setPr(r.pr);SYNC=teraz();CHYBA="";cnt();
+if(WEB.length!==n||JSON.stringify(PR)!==np){render();if(document.getElementById("ldlg").classList.contains("on"))kresliPr()}}).withFailureHandler(()=>{}).api({op:"citaj",t:C.t})}
+setInterval(()=>{if(Q.length||QP.length)posli();else nacitajWeb()},20000);
+window.addEventListener("online",posli);document.addEventListener("visibilitychange",()=>{if(!document.hidden){(Q.length||QP.length)?posli():nacitajWeb()}});
+
+// ---------- zoznam ----------
+let FF=null,FP="";const SEL=new Set();let SHOWN=[];let LIM=150,ZOST=0;
+function spForm(x){return `<div class="sp" style="flex-basis:100%;display:none;gap:8px;flex-wrap:wrap"><select data-sp="typ"><option value="FP">protipožiarna (FP)</option><option value="obyčajná">obyčajná</option></select>
+<select data-sp="od">${Object.entries(OD).map(([d,o])=>`<option value="${o} (DN${d})" ${String(d)===String(x.dn)?"selected":""}>${o} mm · DN${d}</option>`).join("")}</select>
+<input data-sp="ks" type="number" min="1" value="1" style="width:80px"> ks <button data-sp="ok">Zapísať spojku</button></div>`}
+function render(){const q=norm(document.getElementById("q").value),dk=document.getElementById("d").value;
+const L=document.getElementById("l");L.innerHTML="";let n=0,nk=0,nz=0,npr=0;const s=[0,0,0,0,0,0,0,0];SHOWN=[];
+for(const x of D){if(dk&&x.d!==dk)continue;const lo=lokal(x.k);if(FP==="p"&&!jePR(x,lo))continue;const f=fz(x,lo);if(FP==="n"&&f===7)continue;
+s[f]++;const jk=kk(x,lo,f);if(jk)nk++;const jz=zam(x,lo);if(jePR(x,lo))npr++;if(jz)nz++;if(FK&&!jk)continue;if(FZM&&!jz)continue;if(FF!==null&&f!==FF)continue;if(q&&!norm(x.r+x.i).includes(q))continue;SHOWN.push(x.k);if(n++>=LIM)continue;
+const li=document.createElement("li");const pp=otvProb(x.k);li.className="F"+f+(pp.length?" pr":"")+(jk?" kk":"");
+const z=x.z||{};const lw=Object.keys(lo).filter(a=>lo[a].ts).map(a=>LBL[a]+" "+lo[a].t+" "+(lo[a].kto||""));
+const lz=Object.keys(lo).filter(a=>!lo[a].ts).map(a=>LBL[a]+" "+lo[a].t);
+li.innerHTML=`<input type="checkbox" class="ch" ${SEL.has(x.k)?"checked":""}>${jk?'<span class="kkb">🔍 Skontrolovať</span> ':""}${jz?'<span class="kkb" style="background:#c62828;color:#fff">📏 Zamerať</span> ':""}<span class="t">${x.r} ${x.i}</span> <span class="m">DN${x.dn} · D${x.d}${x.p?" · PR":""}</span> ${x.bl?'<span class="mat bl">Blücher</span>':x.med?'<span class="mat">Cu</span>':""}<br>
+<span class="m">${FZ[f]} · Meyer: ${esc(x.sm||"–")}${x.t?" · "+esc(x.t):""}</span>
+${Object.keys(z).length?`<br><span class="m">Zapísané: ${Object.keys(z).map(a=>(LBL[a]||a)+" "+esc(z[a][0])).join(", ")}</span>`:""}
+${lw.length?`<br><span class="ok">Nové: ${esc(lw.join(", "))}</span>`:""}${lz.length?`<br><span class="q">Čaká: ${esc(lz.join(", "))}</span>`:""}
+${pp.length?`<br><span class="pb">⚠ ${pp.map(p=>esc(PT[p.typ]||p.typ)+(p.stav==="schválené"?" (objednáva sa)":p.stav==="objednané"?" (objednané)":p.stav==="neisté – overiť"?" (objednávka neistá!)":"")).join(" · ")}</span>`:""}
+<div class="acts">${jk?`<button data-a="skontrolovane" class="kok">✓ Skontrolované – je v poriadku (leží)</button>`:""}${Object.keys(AK).map(a=>`<button data-a="${a}">${AK[a]}</button>`).join("")}
+<button data-a="problem" class="red">⚠ Problém</button><button data-a="viac">⋯ Viac</button>${DANIEL&&f===3&&!x.bl?`<button data-a="objednat" class="obj" style="flex-basis:100%">📦 Vyskladniť cez Forms (je hotová na sklade)</button>`:""}
+<div class="more">${Object.keys(AK2).map(a=>`<button data-a="${a}">${AK2[a]}</button>`).join("")}${spForm(x)}</div></div>`;
+li.onclick=e=>klik(e,li,x,lo);L.appendChild(li)}
+ZOST=Math.max(0,n-LIM);if(ZOST){const mo=document.createElement("li");mo.className="more";mo.textContent="Zobraziť ďalších "+Math.min(ZOST,300)+" (zostáva "+ZOST+")";mo.onclick=()=>{LIM+=300;render()};L.appendChild(mo)}
+document.getElementById("sum").innerHTML=`<span class="chip" data-z="1" style="background:#c62828;font-weight:700${FZM?"":""}">📏 Zamerať ${nz}${FZM?" ✕":""}</span><span class="chip" style="background:#2e7d32;cursor:default">✓ Zamerané ${npr-nz} z ${npr}</span>`+(DANIEL?`<span class="chip kkc${FK?"":(nk?"":" off")}" data-k="1">🔍 Na kontrolu ${nk}${FK?" ✕":""}</span>`:"")+[1,2,3,4,5,6,7,0].map(i=>`<span class="chip f${i}${FF!==null&&FF!==i?" off":""}" data-f="${i}">${FZ[i]} ${s[i]}</span>`).join("")+`<span id="info">${n>LIM?Math.min(n,LIM)+" z "+n+" rúr":n+" rúr"}</span>`;prb()}
+window.addEventListener("scroll",()=>{if(ZOST&&window.innerHeight+window.scrollY>document.body.offsetHeight-900){LIM+=300;render()}});
+function klik(e,li,x,lo){
+if(document.body.classList.contains("multi")){SEL.has(x.k)?SEL.delete(x.k):SEL.add(x.k);mc();render();return}
+if(e.target.closest&&e.target.closest(".sp")){if(e.target.dataset.sp!=="ok")return;const f=e.target.closest(".sp");
+Q.push({id:nid(),k:x.k,a:"spojka",t:teraz(),p:f.querySelector("[data-sp=typ]").value+" "+f.querySelector("[data-sp=od]").value+" "+(f.querySelector("[data-sp=ks]").value||1)+" ks"});ulozQ();render();return}
+const a=e.target.dataset&&e.target.dataset.a;if(!a){li.classList.toggle("open");return}
+if(a==="viac"){li.querySelector(".more").classList.toggle("on");return}
+if(a==="spojka"){const f=li.querySelector(".sp");f.style.display=f.style.display==="flex"?"none":"flex";return}
+if(a==="problem"){otvorProblem(x);return}
+if(a==="objednat"){otvorObj([x.k]);return}
+let p="";if(a==="domer"){p=prompt("S čím odišlo na výrobu (sken / mail) – nepovinné","")||""}
+if(a==="zrus"){const zz=Q.filter(t=>t.k===x.k&&t.a!=="zrus");if(zz.length){Q=Q.filter(t=>t!==zz[zz.length-1])}
+else{const ww=Object.keys(lo);if(!ww.length){alert("Nie je čo zrušiť – staršie zápisy oprav cez Daniela.");return}
+const posl=ww.map(k=>lo[k]).sort((a,b)=>a.ts<b.ts?-1:1).pop();if(!confirm("Zrušiť: "+LBL[posl.a]+" "+posl.t+"?"))return;Q.push({id:nid(),k:x.k,a:"zrus",t:teraz(),p:posl.a})}}
+else Q.push({id:nid(),k:x.k,a:a,t:teraz(),p:p});ulozQ();render()}
+document.getElementById("sum").onclick=e=>{const c=e.target.closest(".chip");if(!c)return;if(c.dataset.f===undefined&&!c.dataset.z&&!c.dataset.k)return;if(c.dataset.z){FZM=!FZM;FK=false;FF=null;LIM=150;window.scrollTo(0,0);render();return}if(c.dataset.k){FK=!FK;FZM=false;FF=null;LIM=150;window.scrollTo(0,0);render();return}const i=+c.dataset.f;FF=FF===i?null:i;LIM=150;window.scrollTo(0,0);render()};
+
+// ---------- problém + fotky ----------
+let PX=null,PTYP="",PFOT=[],PDK="",PST="";
+function tgSel(id,v){for(const b of document.querySelectorAll("#"+id+" button"))b.classList.toggle("sel",b.dataset.v===v)}
+document.getElementById("pdk").onclick=e=>{const b=e.target.closest("button");if(!b)return;PDK=b.dataset.v;tgSel("pdk",PDK)};
+document.getElementById("pst").onclick=e=>{const b=e.target.closest("button");if(!b)return;PST=b.dataset.v;tgSel("pst",PST)};
+function otvorProblem(x,fotky){PX=x;PTYP="";PFOT=fotky||[];document.getElementById("ptit").textContent=x?("⚠ Problém – "+x.r+" "+x.i):"⚠ Problém / čo treba";
+document.getElementById("ptext").value="";document.getElementById("pnahl").innerHTML="";for(const d of PFOT)pridajNahl(d);
+document.getElementById("prq").value="";
+PDK=x&&/^0[0-3]$/.test(x.d)?x.d:(document.getElementById("d").value||"");PST="";tgSel("pdk",PDK);tgSel("pst",PST);
+document.getElementById("prura").style.display=x?"none":"block";
+document.getElementById("ptypy").innerHTML=Object.keys(PT).map(t=>`<button data-t="${t}">${PT[t]}</button>`).join("");
+document.getElementById("pdlg").classList.add("on")}
+document.getElementById("ptypy").onclick=e=>{const b=e.target.closest("button");if(!b)return;PTYP=b.dataset.t;
+for(const x of document.querySelectorAll("#ptypy button"))x.classList.toggle("sel",x===b)};
+document.getElementById("pfoto").onclick=()=>document.getElementById("pfile").click();
+function pridajNahl(d){const i=document.createElement("img");i.src=d;document.getElementById("pnahl").appendChild(i)}
+document.getElementById("pfile").onchange=async e=>{for(const f of e.target.files){try{if(PFOT.length>=4){alert("Najviac 4 fotky na jeden problém.");break}const d=await zmensi(f,1400,.72);PFOT.push(d);pridajNahl(d)}catch(er){alert("Fotku sa nepodarilo načítať")}}e.target.value=""};
+// veľký foťák na ploche: najprv fotka, potom formulár
+const FABF=document.createElement("input");FABF.type="file";FABF.accept="image/jpeg,image/png";FABF.capture="environment";FABF.multiple=true;FABF.style.display="none";document.body.appendChild(FABF);
+document.getElementById("fab").onclick=()=>FABF.click();
+FABF.onchange=async e=>{const fo=[];for(const f of [...e.target.files].slice(0,4)){try{fo.push(await zmensi(f,1400,.72))}catch(er){}}e.target.value="";if(!fo.length){alert("Fotku sa nepodarilo načítať");return}otvorProblem(null,fo)};
+document.getElementById("prq").addEventListener("input",()=>{const q=norm(document.getElementById("prq").value);if(q.length<3){document.getElementById("prl").innerHTML="";return}
+document.getElementById("prl").innerHTML=D.filter(x=>norm(x.r+x.i).includes(q)).slice(0,12).map(x=>`<option value="${x.r} ${x.i}">`).join("")});
+function najdiRuru(t){const q=norm(t).toUpperCase();if(!q)return null;return D.find(x=>norm(x.r+x.i).toUpperCase()===q)||null}
+function zmensi(f,max,q){return new Promise((ok,zle)=>{const r=new FileReader();r.onerror=zle;r.onload=()=>{const im=new Image();im.onerror=zle;im.onload=()=>{
+let w=im.width,h=im.height,s=Math.min(1,max/Math.max(w,h));const c=document.createElement("canvas");c.width=Math.round(w*s);c.height=Math.round(h*s);
+c.getContext("2d").drawImage(im,0,0,c.width,c.height);ok(c.toDataURL("image/jpeg",q))};im.src=r.result};r.readAsDataURL(f)})}
+document.getElementById("pzrus").onclick=()=>document.getElementById("pdlg").classList.remove("on");
+document.getElementById("pok").onclick=()=>{if(!PTYP){alert("Vyber, čo je za problém.");return}
+let rx=PX;const rq=document.getElementById("prq").value.trim();
+if(!rx&&rq){rx=najdiRuru(rq);if(!rx&&!confirm("Rúru "+rq+" nepoznám – poslať aj tak (číslo bude v poznámke)?"))return}
+if(!rx&&!PFOT.length){alert("Bez rúry pridaj aspoň fotku.");return}
+if(!DANIEL&&!rx&&(!PDK||!PST)){alert("Vyber deck a stranu.");return}
+const dk=PDK;let tx=document.getElementById("ptext").value.trim();
+if(!rx&&rq)tx="Rúra "+rq+(tx?" – "+tx:"");if(dk||PST)tx="[Deck "+(dk||"?")+(PST?" · "+PST:"")+"] "+tx;
+const p={id:nid(),k:rx?rx.k:"",typ:PTYP,text:tx.trim(),fotky:PFOT,ts:"",kto:C.u};
+QP.push(p);if(!ulozQP())alert("Fotky sa nezmestili do pamäte telefónu – NEZATVÁRAJ appku, kým dole nebude „✓ všetko odoslané“.");
+document.getElementById("pdlg").classList.remove("on");cnt();render();posli()};
+document.getElementById("pnew").onclick=()=>{menu(false);otvorProblem(null)};
+
+// ---------- návrh riešenia (z našich dát, bez AI) ----------
+function stavRury(y){const lo=lokal(y.k),f=fz(y,lo);return y.r+" "+y.i+": "+FZ[f]+(y.sm?" (Meyer "+y.sm+(y.t?", "+y.t:"")+")":"")}
+function navrh(p){const m=DK(),x=m.get(p.k);
+if(p.typ==="montaz")return x?"Zapísať "+x.r+" "+x.i+" ako namontované (skontroluj štítok na fotke).":"Namontované – číslo rúry zo štítku na fotke, zapísať ako namontované.";
+if(p.typ==="chybny")return (x?x.r+" "+x.i+": ":"")+"chybný kus – pozri fotku; ak je chyba výroby, reklamovať u Meyera / objednať nový (Forms), ak nesedí trasa, zamerať a poslať domer.";
+if(!x)return p.typ==="domer"?"Zameraná rúra – číslo rúry z fotky, izometriu poslať na výrobu (Middendorf).":"Rúra nie je zadaná – číslo je na fotke / v poznámke. "+(p.typ==="rura"?"Overiť stav u Meyera a objednať.":"");
+const linka=D.filter(y=>y.b===x.b&&y.r===x.r&&y.k!==x.k).sort((a,b)=>a.i<b.i?-1:1);
+const sus=linka.length?"Linka "+x.r+": "+linka.map(y=>y.i+" – "+FZ[fz(y,lokal(y.k))]).join(", ")+".":"";
+const sm=(x.sm||"").toLowerCase();
+if(p.typ==="trasa"){const chyb=linka.filter(y=>fz(y,lokal(y.k))<5);
+return "Nedá sa zamerať, kým nie je hotová nadväzujúca trasa. "+(chyb.length?"Na linke ešte nie je na palube: "+chyb.map(y=>y.r+" "+y.i+" ("+(y.sm||"?")+(y.t?", "+y.t:"")+")").join(", ")+" → "+
+(chyb.some(y=>y.bl)?"Blücher zobrať zo skladu; ":"")+(chyb.some(y=>!y.bl&&/eingelagert|sklad/i.test(y.sm+y.s))?"ostatné vyskladniť cez Forms.":"ostatné: počkať na Meyer / urgovať."):"Na linke je všetko na palube → najprv namontovať susedné kusy.")+" "+sus}
+if(p.typ==="priruby")return "Objednať príruby na Korbmodell pre "+x.r+" "+x.i+" (DN"+x.dn+") cez Forms – presný typ a počet podľa tabuľky vpravo hore na izometrii (fotka). "+sus;
+if(p.typ==="rura"&&x.bl)return "Blücher – nevyskladňuje sa, leží komplet na sklade → ísť a zobrať. Forms NEPOSIELAŤ."+(x.f<=1?" Pozor: Meyer ju vedie ešte v Catii (nedomeraná).":"");
+if(p.typ==="rura"){if(/eingelagert/.test(sm)||/sklad/.test((x.s||"").toLowerCase()))return "Rúra je u Meyera na sklade → vyskladniť cez Forms na V600, Comp 18, Deck "+x.d+".";
+if(/ausgelagert/.test(sm))return "Meyer ju vedie ako vyskladnenú"+(x.t?" ("+x.t+")":"")+(x.ap?", AP "+x.ap:"")+" → hľadať na V600 / na lodi"+(x.kam?" ("+x.kam+")":"")+"; ak nie je, reklamovať u AV.";
+if(/fertigung|freigabe|oberfl/.test(sm))return "Vo výrobe u Meyera"+(x.t?", termín "+x.t:"")+" → počkať, prípadne urgovať.";
+if(/catia/.test(sm))return "Nedomeraná (Catia) → najprv domer.";return "Stav Meyer: "+(x.sm||"?")+" → preveriť."}
+if(p.typ==="domer")return "Zameraná rúra – izometriu s mierami poslať na výrobu (Middendorf) a rúru zapísať ako Domerané → na výrobu.";
+if(p.typ==="material")return "Objednať materiál cez Forms na V600, Comp 18, Deck "+x.d+" (text z poznámky).";
+return sus||"Posúdi Daniel."}
+function forms(p){const x=DK().get(p.k);
+if(p.material)return p.material;const tx=(p.text||"").replace(/^\[Deck [^\]]*\]\s+/,"");
+if(p.typ==="material")return (x?x.r+" "+x.i+": ":"")+tx;
+if(p.typ==="priruby"&&x)return "Flansche für Korbmodell "+x.r+" "+x.i+" DN"+x.dn+" (lt. Isometrie)";
+if(p.typ==="rura"&&x&&x.bl)return "";
+if(p.typ==="rura"&&x)return "Rohr "+x.r+" "+x.i+" DN"+x.dn+" auslagern";
+if(p.typ==="trasa")return "";
+if(p.typ==="priruby")return "Flansche für Korbmodell: "+tx;
+if(p.typ==="rura")return "Rohr auslagern: "+tx;
+return tx}
+
+// ---------- zoznam problémov ----------
+function prb(){const n=PR.filter(p=>!ZAVRETE.has(p.stav)).length+QP.length;document.getElementById("prb").textContent="⚠ "+n}
+document.getElementById("prb").onclick=()=>{kresliPr();document.getElementById("ldlg").classList.add("on")};
+document.getElementById("lzav").onclick=()=>document.getElementById("ldlg").classList.remove("on");
+document.getElementById("lf").onchange=kresliPr;
+function kresliPr(){const vse=document.getElementById("lf").value==="vse";const m=DK();
+const zoz=QP.map(p=>Object.assign({stav:"čaká na signál"},p)).concat(PR.slice().reverse()).filter(p=>vse||!ZAVRETE.has(p.stav));
+const el=document.getElementById("lp");if(!zoz.length){el.innerHTML='<p class="m">Žiadne otvorené problémy.</p>';return}
+el.innerHTML=zoz.map(p=>{const x=m.get(p.k);const b=p.stav==="objednané"?"ok":p.stav==="schválené"?"obj":p.stav==="neisté – overiť"?"ne":p.stav==="zrušené"?"zr":"";const blr=x&&x.bl&&p.typ==="rura";
+return `<li class="pr" data-id="${esc(p.id)}"><span class="t">${x?x.r+" "+x.i:"(rúra z fotky)"}</span> ${x?`<span class="m">DN${x.dn} · D${x.d}</span>`:""}<br>
+<span class="pb">${esc(PT[p.typ]||p.typ)}</span> <span class="badge ${b}">${esc(p.stav||"")}</span><br>
+<span class="m">${esc(p.kto||"")} · ${esc(p.ts||"")}${p.text?" · "+esc(p.text):""}</span>
+${(p.fotky||[]).map((f,i)=>f.startsWith("data:")?`<img class="foto" src="${f}">`:`<button class="fbtn" data-f="${esc(f)}" style="width:100%;margin-top:8px">📷 Zobraziť fotku ${i+1}</button>`).join("")}
+<div class="navrh"><b>Návrh:</b> ${esc(navrh(p))}</div>
+${p.stav==="schválené"?`<div class="m" style="margin-top:6px">⏳ Lucy odosiela do Forms… (beží každé 2 min)</div>`:""}
+${p.stav==="neisté – overiť"?`<div class="pb" style="margin-top:6px">⚠ Lucy klikla Odoslať, ale Forms nepotvrdil: ${esc((p.forms_vysl||{}).pozn||"")}<br>Over v maili (potvrdenie z Forms) alebo u Meyera, či objednávka došla. Ak áno → „Vyriešené“. Ak nie → „Znova otvoriť“ a schváľ znova so zaškrtnutím.</div>`:""}
+${p.stav==="zrušené"?`<div class="m" style="margin-top:6px">Objednávka zrušená${p.objednane_uz?" – POZOR, predtým už raz odišla":""}.</div>`:""}
+${blr&&DANIEL&&!ZAVRETE.has(p.stav)?`<div class="m" style="margin-top:6px">Blücher – zo skladu, bez Forms.</div>`:""}
+${p.stav==="objednané"?`<div class="ok" style="margin-top:6px">✓ Objednané ${esc((p.forms_vysl||{}).cas||"")} – ${esc((p.forms||{}).material||p.material||"")} · termín ${esc((p.forms||{}).termin||"")}</div>`:""}
+${p.stav==="chyba objednávky"?`<div class="pb" style="margin-top:6px">Forms neodišiel: ${esc((p.forms_vysl||{}).pozn||"")}</div>`:""}
+${DANIEL&&p.stav!=="čaká na signál"&&!ZAVRETE.has(p.stav)&&p.stav!=="objednané"&&p.stav!=="schválené"&&p.stav!=="neisté – overiť"&&!blr?objForm(p):""}
+${DANIEL&&p.stav!=="čaká na signál"?`<div class="row" style="margin-top:8px">${p.stav==="schválené"?`<button data-s="zrušené" class="red" style="flex:1">✗ Zrušiť objednávku</button>`:""}${p.stav==="neisté – overiť"?`<button data-s="nové" style="flex:1">Znova otvoriť (objednať znova)</button>`:""}${!ZAVRETE.has(p.stav)?`<button data-s="vyriešené" style="flex:1">✓ Vyriešené${p.stav==="objednané"||p.stav==="neisté – overiť"?"":" (bez objednávky)"}</button>`:`<button data-s="nové" style="flex:1">Znova otvoriť</button>`}</div>`:""}</li>`}).join("")}
+function dalsiTermin(){const d=new Date(Date.now()+48*3600e3);d.setDate(d.getDate()+1);while(d.getDay()===0||d.getDay()===6)d.setDate(d.getDate()+1);return d.getDate()+". "+(d.getMonth()+1)+". "+d.getFullYear()}
+function objForm(p){const x=DK().get(p.k),f=p.forms||{};const dk=(f.deck!=null?f.deck:(x&&/^0[0-3]$/.test(x.d)?String(+x.d):(((p.text||"").match(/\[Deck 0?([0-3])/)||[])[1]||"0")));
+const ps=((p.text||"").match(/\[Deck [^\]]*· (SB|MS|BB)\]/)||[])[1];
+const st=f.strana||(ps==="SB"?"SB / Starboard":ps==="BB"?"BB / Backboard":"MS / Middle of the ship");
+return `<div class="of" style="margin-top:8px;border-top:1px solid var(--ln);padding-top:6px"><b>Objednávka – Forms Materialanforderung</b>
+<label>Čo objednať (max 250 znakov)</label><textarea class="mt" rows="3" maxlength="250">${esc(f.material||forms(p))}</textarea>
+<div class="row"><div style="flex:1"><label>Deck</label><select class="odk">${["0","1","2","3"].map(v=>`<option ${v===dk?"selected":""}>${v}</option>`).join("")}</select></div>
+<div style="flex:2"><label>Strana</label><select class="ost">${["SB / Starboard","BB / Backboard","MS / Middle of the ship"].map(v=>`<option ${v===st?"selected":""}>${v}</option>`).join("")}</select></div></div>
+<div class="row"><div style="flex:2"><label>Dodať (d. M. rrrr)</label><input class="otr" value="${esc(f.termin||dalsiTermin())}"></div>
+<div style="flex:1"><label>Spant</label><input class="osp" value="${esc(f.spant||"96")}"></div></div>
+<div class="m" style="margin-top:6px">Pevné: S.724 · V600 · Comp 18 · FZ 06 · Mechanik · Partnerfirma MAS Services s.r.o. · PN 0144400 · bez Materialpaketu · schmiedl500@gmail.com</div>
+${p.neiste||p.objednane_uz?`<label class="ov"><input type="checkbox" class="ovr"><span>${p.objednane_uz?"Z tohto problému už raz objednávka ODIŠLA. ":"Lucy už raz klikla Odoslať bez potvrdenia. "}Overil som (mail z Forms / Meyer), že túto objednávku treba poslať znova.</span></label>`:""}
+<button class="pri" data-s="schválené" style="width:100%;margin-top:8px;min-height:54px">✓ Súhlasím – odoslať do Forms</button></div>`}
+document.getElementById("lp").onclick=e=>{const fb=e.target.closest(".fbtn");
+if(fb){fb.textContent="načítavam…";google.script.run.withSuccessHandler(d=>{const i=document.createElement("img");i.className="foto";i.src=d;fb.replaceWith(i)})
+.withFailureHandler(()=>{fb.textContent="Fotku sa nepodarilo načítať – skús znova"}).api({op:"foto",t:C.t,id:fb.dataset.f});return}
+const b=e.target.closest("button[data-s]");if(!b)return;const li=b.closest("li"),id=li.dataset.id,mt=li.querySelector(".mt");
+let fo=null,overil=false;
+if(b.dataset.s==="zrušené"&&!confirm("Zrušiť objednávku? Ak ju Lucy medzitým už odoslala, uvidíš to tu ako „objednané“."))return;
+if(b.dataset.s==="schválené"){const m=(mt.value||"").trim(),tr=li.querySelector(".otr").value.trim();const ov=li.querySelector(".ovr");
+if(ov&&!ov.checked){alert("Najprv over, či objednávka u Meyera nie je, a zaškrtni to.");return}overil=!!(ov&&ov.checked);
+if(!m){alert("Doplň, čo sa má objednať.");return}if(!/^\d{1,2}\. ?\d{1,2}\. ?\d{4}$/.test(tr)){alert("Dátum napíš ako 10. 11. 2026");return}
+fo={material:m,deck:li.querySelector(".odk").value,strana:li.querySelector(".ost").value,termin:tr.replace(/\. ?/g,". ").trim(),spant:li.querySelector(".osp").value.trim()||"96"};
+if(!confirm("Odoslať do Forms?\n\n"+fo.material+"\nDeck "+fo.deck+" · "+fo.strana+" · Spant "+fo.spant+"\nDodať "+fo.termin))return}
+b.disabled=true;b.textContent="ukladám…";
+google.script.run.withSuccessHandler(r=>{setPr(r.pr);kresliPr();render()}).withFailureHandler(er=>{b.disabled=false;b.textContent="Chyba – skús znova"})
+.api({op:"problem_stav",t:C.t,id:id,stav:b.dataset.s,material:fo?fo.material:(mt?mt.value.trim():null),forms:fo,overil:overil})};
+
+// ---------- objednávka hotových rúr priamo (Daniel 08.11.2026 20:03) ----------
+let OBJK=[];
+function otvorObj(keys){const m=DK();OBJK=keys.filter(k=>m.get(k));if(!OBJK.length)return;
+const xs=OBJK.map(k=>m.get(k));const bl=xs.filter(x=>x.bl);
+if(bl.length){alert("Blücher sa nevyskladňuje – zober zo skladu: "+bl.map(x=>x.r+" "+x.i).join(", "));OBJK=OBJK.filter(k=>!m.get(k).bl);if(!OBJK.length)return}
+const xx=OBJK.map(k=>m.get(k));
+document.getElementById("oz").innerHTML=xx.map(x=>`<div>${x.r} ${x.i} · DN${x.dn} · D${x.d} · <span class="m">${FZ[fz(x,lokal(x.k))]} · Meyer: ${esc(x.sm||"–")}</span></div>`).join("");
+let mat=(xx.length===1?"Rohr "+xx[0].r+" "+xx[0].i+" DN"+xx[0].dn+" auslagern":"Rohre auslagern: "+xx.map(x=>x.r+" "+x.i).join(", "));
+if(mat.length>250){mat=mat.slice(0,247)+"…";}
+const dk=/^0[0-3]$/.test(xx[0].d)?String(+xx[0].d):"0";
+document.getElementById("of").innerHTML=`<label>Čo objednať (max 250 znakov${xx.length>1?" – pri veľa rúrach rozdeľ na viac objednávok":""})</label><textarea class="mt" rows="4" maxlength="250">${esc(mat)}</textarea>
+<div class="row"><div style="flex:1"><label>Deck</label><select class="odk">${["0","1","2","3"].map(v=>`<option ${v===dk?"selected":""}>${v}</option>`).join("")}</select></div>
+<div style="flex:2"><label>Strana</label><select class="ost">${["SB / Starboard","BB / Backboard","MS / Middle of the ship"].map(v=>`<option ${v==="MS / Middle of the ship"?"selected":""}>${v}</option>`).join("")}</select></div></div>
+<div class="row"><div style="flex:2"><label>Dodať (d. M. rrrr)</label><input class="otr" value="${esc(dalsiTermin())}"></div><div style="flex:1"><label>Spant</label><input class="osp" value="96"></div></div>
+<div class="m" style="margin-top:6px">Pevné: S.724 · V600 · Comp 18 · FZ 06 · Mechanik · Partnerfirma MAS Services s.r.o. · PN 0144400 · bez Materialpaketu · schmiedl500@gmail.com</div>
+<button class="pri" id="ook" style="width:100%;margin-top:8px;min-height:54px">✓ Súhlasím – odoslať do Forms</button>`;
+document.getElementById("odlg").classList.add("on");
+document.getElementById("ook").onclick=()=>{const b=document.getElementById("ook"),f=document.getElementById("of");const m=(f.querySelector(".mt").value||"").trim(),tr=f.querySelector(".otr").value.trim();
+if(!m){alert("Doplň, čo sa má objednať.");return}if(!/^\d{1,2}\. ?\d{1,2}\. ?\d{4}$/.test(tr)){alert("Dátum napíš ako 10. 11. 2026");return}
+const fo={material:m,deck:f.querySelector(".odk").value,strana:f.querySelector(".ost").value,termin:tr.replace(/\. ?/g,". ").trim(),spant:f.querySelector(".osp").value.trim()||"96"};
+if(!confirm("Odoslať do Forms?\n\n"+fo.material+"\nDeck "+fo.deck+" · "+fo.strana+" · Spant "+fo.spant+"\nDodať "+fo.termin))return;
+b.disabled=true;b.textContent="odosielam…";
+const p={id:nid(),k:OBJK.length===1?OBJK[0]:"",typ:"rura",text:"[Deck 0"+fo.deck+" · "+fo.strana.split(" /")[0]+"] Vyskladniť zo skladu Meyer: "+OBJK.map(k=>DK().get(k).r+" "+DK().get(k).i).join(", "),fotky:[],kto:C.u,schvalit:fo};
+google.script.run.withSuccessHandler(r=>{setPr(r.pr);document.getElementById("odlg").classList.remove("on");SEL.clear();mc();document.body.classList.remove("multi");render();alert("Objednávka uložená – Lucy ju odošle do Forms do 2 minút. Stav uvidíš v ⚠ zozname.")})
+.withFailureHandler(e=>{b.disabled=false;b.textContent="Chyba – skús znova ("+((e&&e.message)||"").slice(0,60)+")"}).api({op:"problem",t:C.t,problem:p})}}
+document.getElementById("ozav").onclick=()=>document.getElementById("odlg").classList.remove("on");
+
+// ---------- menu, hromadné, pridať ----------
+function menu(on){document.getElementById("menu").classList.toggle("on",on)}
+document.getElementById("men").onclick=e=>{e.stopPropagation();menu(!document.getElementById("menu").classList.contains("on"))};
+document.addEventListener("click",e=>{if(!e.target.closest("#menu")&&e.target.id!=="men")menu(false)});
+for(const b of document.querySelectorAll("#menu button[data-f]"))b.onclick=()=>{FP=b.dataset.f;menu(false);LIM=150;render()};
+function mc(){document.getElementById("mcnt").textContent=SEL.size+" ks"}
+document.getElementById("multi").onclick=()=>{menu(false);document.body.classList.toggle("multi");SEL.clear();mc();render()};
+document.getElementById("mall").onclick=()=>{for(const k of SHOWN)SEL.add(k);mc();render()};
+if(DANIEL){document.getElementById("mobj").style.display="";const kb=document.createElement("button");kb.dataset.m="skontrolovane";kb.textContent="✓ Skontrolované";kb.style.cssText="background:#1e8e3e;color:#fff;border-color:#1e8e3e";document.getElementById("mobj").before(kb)}
+for(const b of document.querySelectorAll("#mbar button[data-m]"))b.onclick=()=>{if(!SEL.size){alert("Nič nie je vybrané");return}
+if(b.dataset.m==="objednat"){otvorObj([...SEL]);return}
+let t=teraz();if(b.dataset.m==="namontovane"&&confirm("Bolo to hotové už skôr (pred dneškom)?"))t="skôr";
+for(const k of SEL)Q.push({id:nid(),k:k,a:b.dataset.m,t:t,p:""});SEL.clear();mc();ulozQ();document.body.classList.remove("multi");render()};
+document.getElementById("add").onclick=()=>{menu(false);
+const r=(prompt("Rúra – BGR, číslo a index (napr. 764 S2019 A)",document.getElementById("q").value)||"").toUpperCase().replace(/[\/]/g," ").trim();
+if(!r)return;const m=r.replace(/\s+/g," ").match(/^(\d{3})\s*([A-Z])\s*(\d{3,5})\s*([A-Z]{1,2})$/);
+if(!m){alert("Nerozumiem – napíš napr. 764 S2019 A");return}
+const k=m[1]+m[2]+m[3]+"#"+m[4];const pr=confirm("Je to Passrohr (PR)?");const ex=D.find(x=>x.k===k);let dn="?",dk="?";
+if(!ex){dn=(prompt("DN (nepovinné)","")||"?").replace(/\D/g,"")||"?";dk=(prompt("Deck 00 / 01 / 02 / 03","00")||"?").replace(/\D/g,"").padStart(2,"0");if(!/^0[0-3]$/.test(dk))dk="?"}
+else if(!pr){alert("Rúra už v zozname je: "+ex.r+" "+ex.i+" · Deck "+ex.d+" · DN"+ex.dn);document.getElementById("q").value=ex.r+" "+ex.i;render();return}
+PRID.push({k:k,r:m[1]+" "+m[2]+m[3],i:m[4],dn:dn,b:m[1],d:dk,p:pr?1:0,sm:"pridaná ručne",s:"",t:"",pr:"",kam:"",ap:"",v:"",vs:"",dm:"",f:pr?2:1,z:{}});ls(PKEY,PRID);
+Q.push({id:nid(),k:k,a:"pridaj",t:teraz(),p:(pr?"PR ":"")+(dn!=="?"?"DN"+dn+" ":"")+(dk!=="?"?"D"+dk:"")});ulozQ();
+D=Dall();document.getElementById("q").value=m[1]+" "+m[2]+m[3]+" "+m[4];render()};
+document.getElementById("send").onclick=()=>{if(!Q.length&&!QP.length){nacitajWeb();return}CHYBA="";posli()};
+document.getElementById("obnov").onclick=()=>{window.open(C.url,"_top")};
+for(const id of["q","d"])document.getElementById(id).addEventListener("input",()=>{LIM=150;render()});
+if(false){document.body.classList.add("foto");   // v12 Daniel 10.11. 06:41 „bez foto, len na zapisovanie“
+document.getElementById("vmeno").textContent=C.u+" · Comp 18";
+document.getElementById("vbig").onclick=()=>FABF.click();
+const GALF=document.createElement("input");GALF.type="file";GALF.accept="image/jpeg,image/png";GALF.multiple=true;GALF.style.display="none";document.body.appendChild(GALF);GALF.onchange=FABF.onchange;
+document.getElementById("vgal").onclick=()=>GALF.click();}
+function vzoz(){if(DANIEL)return;const m=DK();const moje=QP.map(p=>Object.assign({stav:"čaká na signál"},p)).concat(PR.filter(p=>p.kto===C.u&&p.stav!=="zrušené").slice().reverse()).slice(0,15);
+document.getElementById("vzoz").innerHTML=moje.length?"<h3 style='margin:16px 0 6px'>Moje posledné</h3>"+moje.map(p=>{const x=m.get(p.k);
+return `<li class="pr"><b>${esc(PT[p.typ]||p.typ)}</b> <span class="badge ${p.stav==="objednané"?"ok":p.stav==="schválené"?"obj":""}">${esc(p.stav==="schválené"?"objednáva sa":p.stav==="neisté – overiť"?"objednáva sa (Daniel overuje)":p.stav)}</span><br>
+<span class="m">${x?x.r+" "+x.i+" · ":""}${esc(p.text||"")} · ${esc(p.ts||"")}</span></li>`}).join(""):""}
+const _r0=render;render=function(){_r0();vzoz()};
+D=Dall();cnt();render();posli();
+
+document.getElementById("obnov").onclick=()=>location.reload();
+}
+boot();
+</script></body></html>
