@@ -150,10 +150,10 @@ function START(DD,C){
 
 const D0=DD.rows||[];const VYT=((DD.web_do||DD.vytvorene)||"").replace("T"," ");
 const DANIEL=C.uk==="daniel";
-const FZ=["v konštrukcii (Catia)","Passrohr nedomeraný","vo výrobe / domerané","na sklade – zobrať","vyskladnené (Meyer)","leží na palube","montuje sa","namontované – hotové"];
-const AK={lezi:"Leží na palube",montuje:"Montuje sa",namontovane:"Hotové",domer:"Domerané → na výrobu"};
+const FZ=["v konštrukcii (Catia)","Zamerať","objednané / vo výrobe","na sklade – zobrať","vyskladnené (Meyer)","leží na palube","montuje sa","namontované – hotové"];
+const AK={lezi:"Leží na palube",montuje:"Montuje sa",namontovane:"Hotové",domer:"Zamerané – objednané"};
 const AK2={korb:"Korbmodell urobený",korb_odovzdany:"Korbmodell odovzdaný",spojka:"Teekay spojka",zrus:"Zrušiť posledné"};
-const LBL=Object.assign({},AK,AK2,{domer:"Domerané – na výrobu",namontovane:"Hotové – namontované",pridaj:"Pridaná do zoznamu",skontrolovane:"✓ Skontrolované"});
+const LBL=Object.assign({},AK,AK2,{domer:"Zamerané – objednané",namontovane:"Hotové – namontované",pridaj:"Pridaná do zoznamu",skontrolovane:"✓ Skontrolované"});
 const PT={poskodena:"💥 Poškodená",chybny:"❌ Nesedí",material:"🧰 Chýba materiál",trasa:"🚧 Nedá sa zamerať",ine:"Iné",montaz:"✅ Namontované (štítok)",domer:"📏 Domer",rura:"📦 Objednať túto rúru",priruby:"🔩 Objednať príruby"};
 const PT_SKRYTE={montaz:1,domer:1,rura:1,priruby:1};   // v3: staré typy len na zobrazenie starých hlásení
 const OD={25:"33,7",32:"42,4",40:"48,3",50:"60,3",65:"76,1",80:"88,9",100:"114,3",125:"139,7",150:"168,3",200:"219,1",250:"273",300:"323,9",350:"355,6",400:"406,4"};
@@ -232,7 +232,7 @@ ${pp.length?`<br><span class="pb">⚠ ${pp.map(p=>esc(PT[p.typ]||p.typ)+(p.stav=
 <div class="more">${Object.keys(AK2).map(a=>`<button data-a="${a}">${AK2[a]}</button>`).join("")}${spForm(x)}</div></div>`;
 li.onclick=e=>klik(e,li,x,lo);L.appendChild(li)}
 ZOST=Math.max(0,n-LIM);if(ZOST){const mo=document.createElement("li");mo.className="more";mo.textContent="Zobraziť ďalších "+Math.min(ZOST,300)+" (zostáva "+ZOST+")";mo.onclick=()=>{LIM+=300;render()};L.appendChild(mo)}
-document.getElementById("sum").innerHTML=`<span class="chip" data-z="1" style="background:#c62828;font-weight:700${FZM?"":""}">📏 Zamerať ${nz}${FZM?" ✕":""}</span><span class="chip" style="background:#2e7d32;cursor:default">✓ Zamerané ${npr-nz} z ${npr}</span>`+(DANIEL?`<span class="chip kkc${FK?"":(nk?"":" off")}" data-k="1">🔍 Na kontrolu ${nk}${FK?" ✕":""}</span>`:"")+[1,2,3,4,5,6,7,0].map(i=>`<span class="chip f${i}${FF!==null&&FF!==i?" off":""}" data-f="${i}">${FZ[i]} ${s[i]}</span>`).join("")+`<span id="info">${n>LIM?Math.min(n,LIM)+" z "+n+" rúr":n+" rúr"}</span>`;prb()}
+document.getElementById("sum").innerHTML=`<span class="chip" data-z="1" style="background:#c62828;font-weight:700${FZM?"":""}">📏 Zamerať ${nz}${FZM?" ✕":""}</span><span class="chip" style="background:#2e7d32;cursor:default">✓ Zamerané ${npr-nz} z ${npr}</span>`+(DANIEL?`<span class="chip kkc${FK?"":(nk?"":" off")}" data-k="1">🔍 Na kontrolu ${nk}${FK?" ✕":""}</span>`:"")+[2,3,4,5,6,7,0].map(i=>`<span class="chip f${i}${FF!==null&&FF!==i?" off":""}" data-f="${i}">${FZ[i]} ${s[i]}</span>`).join("")+`<span id="info">${n>LIM?Math.min(n,LIM)+" z "+n+" rúr":n+" rúr"}</span>`;prb()}
 window.addEventListener("scroll",()=>{if(ZOST&&window.innerHeight+window.scrollY>document.body.offsetHeight-900){LIM+=300;render()}});
 function klik(e,li,x,lo){
 if(document.body.classList.contains("multi")){SEL.has(x.k)?SEL.delete(x.k):SEL.add(x.k);mc();render();return}
@@ -308,7 +308,7 @@ if(p.typ==="rura"){if(/eingelagert/.test(sm)||/sklad/.test((x.s||"").toLowerCase
 if(/ausgelagert/.test(sm))return "Meyer ju vedie ako vyskladnenú"+(x.t?" ("+x.t+")":"")+(x.ap?", AP "+x.ap:"")+" → hľadať na V600 / na lodi"+(x.kam?" ("+x.kam+")":"")+"; ak nie je, reklamovať u AV.";
 if(/fertigung|freigabe|oberfl/.test(sm))return "Vo výrobe u Meyera"+(x.t?", termín "+x.t:"")+" → počkať, prípadne urgovať.";
 if(/catia/.test(sm))return "Nedomeraná (Catia) → najprv domer.";return "Stav Meyer: "+(x.sm||"?")+" → preveriť."}
-if(p.typ==="domer")return "Zameraná rúra – izometriu s mierami poslať na výrobu (Middendorf) a rúru zapísať ako Domerané → na výrobu.";
+if(p.typ==="domer")return "Zameraná rúra – izometriu s mierami poslať na výrobu (Middendorf) a rúru zapísať ako Zamerané – objednané.";
 if(p.typ==="material")return "Objednať materiál cez Forms na V600, Comp 18, Deck "+x.d+" (text z poznámky).";
 return sus||"Posúdi Daniel."}
 function forms(p){const x=DK().get(p.k);
