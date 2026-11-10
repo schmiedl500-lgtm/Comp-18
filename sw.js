@@ -1,5 +1,5 @@
 // Comp 18 offline appka – service worker (Claude 10.11.2026): appka sa uloží do telefónu a otvorí sa aj bez signálu.
-const V = "c18-v2";
+const V = "c18-v3";
 const SUBORY = ["./", "index.html", "manifest.json", "icon-192.png", "icon-512.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(V).then(c => c.addAll(SUBORY)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(k => Promise.all(k.filter(x => x !== V).map(x => caches.delete(x)))).then(() => self.clients.claim())); });
