@@ -60,7 +60,9 @@ body.foto header,body.foto #l,body.foto #mbar,body.foto #fab,body.foto #send{dis
 #fab,#pfoto,#pnew,#vfoto{display:none!important}
 #vbig{width:100%;min-height:42vh;font-size:32px;font-weight:700;border-radius:20px;background:var(--red);color:#fff;border:0}
 .of label{margin:8px 0 2px;font-weight:600;display:block}.of select,.of input,.of textarea{width:100%}.badge.ok{background:var(--f7)}
-</style></head><body>
+#tlac{display:none}
+@media print{body>*{display:none!important}#tlac{display:block!important;font:10px Arial,sans-serif;color:#000;background:#fff}#tlac h1{font-size:15px;margin:0 0 4px}#tlac p{margin:0 0 6px}#tlac table{border-collapse:collapse;width:100%}#tlac th,#tlac td{border:1px solid #888;padding:2px 4px;text-align:left}#tlac th{background:#ddd}#tlac tr{page-break-inside:avoid}}
+</style></head><body><div id="tlac"></div>
 <header>
 <div class="row"><input id="q" type="search" placeholder="Hľadaj rúru, napr. 713 R2001 G">
 <select id="d" style="width:78px"><option value="">Deck</option><option>00</option><option>01</option><option>02</option><option>03</option><option value="--">bez</option></select>
@@ -428,6 +430,24 @@ const _r0=render;render=function(){_r0();vzoz()};
 D=Dall();cnt();render();posli();
 
 document.getElementById("obnov").onclick=()=>location.reload();
+// v2 Daniel 10.11. 19:54 „moja appka musí byť tá, čo riadi a schvaľuje – výstup na Excel a PDF“ (len Daniel): to, čo je práve vyfiltrované
+if(DANIEL){
+ const HL=["Rúra","Index","DN","BGR","Deck","Passrohr","Stav","Zamerať","Stav Meyer","Termín Meyer","AP","Zapísané"];
+ const riadky=()=>{const S=new Set(SHOWN);return D.filter(x=>S.has(x.k)).map(x=>{const lo=lokal(x.k),f=fz(x,lo);const z=Object.assign({},x.z||{},lo);
+  return [x.r,x.i,x.dn,x.b,x.d,jePR(x,lo)?"áno":"nie",FZ[f],zam(x,lo)?"ZAMERAŤ":"",x.sm||"",x.t||"",x.ap||"",Object.keys(z).filter(a=>AK[a]||a==="skontrolovane").map(a=>(AK[a]||"skontrolované")+(z[a]&&z[a]!==true?" "+z[a]:"")).join(", ")]})};
+ const popis=()=>{const f=[];const dk=document.getElementById("d").value;if(dk)f.push("Deck "+dk);if(FZM)f.push("len na zameranie");if(FK)f.push("len na kontrolu");if(FF!==null)f.push(FZ[FF]);
+  const q=document.getElementById("q").value;if(q)f.push("hľadané „"+q+"“");return f.join(" · ")||"všetky rúry"};
+ const dnes=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+ const esc=t=>String(t==null?"":t).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+ const bx=document.createElement("button");bx.textContent="⬇ Excel";
+ bx.onclick=()=>{const r=riadky();const csv="\ufeff"+[HL].concat(r).map(a=>a.map(v=>'"'+String(v==null?"":v).replace(/"/g,'""')+'"').join(";")).join("\r\n");
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download="S724_Comp18_"+dnes()+"_"+r.length+"_rur.csv";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000)};
+ const bp=document.createElement("button");bp.textContent="🖨 PDF";
+ bp.onclick=()=>{const r=riadky();const poc={};for(const x of r)poc[x[6]]=(poc[x[6]]||0)+1;
+  document.getElementById("tlac").innerHTML="<h1>S.724 Comp 18 – potrubie</h1><p>"+esc(popis())+" · "+r.length+" rúr · dáta "+esc(VYT)+" · vytlačené "+new Date().toLocaleString("sk")+"</p><p>"+Object.entries(poc).map(e=>esc(e[0])+": "+e[1]).join(" · ")+"</p><table><tr>"+HL.map(h=>"<th>"+h+"</th>").join("")+"</tr>"+r.map(a=>"<tr>"+a.map(v=>"<td>"+esc(v)+"</td>").join("")+"</tr>").join("")+"</table>";
+  window.print()};
+ const bar=document.getElementById("bar");bar.insertBefore(bp,bar.firstChild);bar.insertBefore(bx,bar.firstChild);
+}
 }
 boot();
 </script></body></html>
